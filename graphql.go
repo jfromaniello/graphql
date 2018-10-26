@@ -100,7 +100,7 @@ func (c *Client) runWithJSON(ctx context.Context, req *Request, resp interface{}
 	var requestBody bytes.Buffer
 	requestBodyObj := struct {
 		Query     string                 `json:"query"`
-		Variables map[string]interface{} `json:"variables"`
+		Variables map[string]interface{} `json:"variables,omitempty"`
 	}{
 		Query:     req.q,
 		Variables: req.vars,
