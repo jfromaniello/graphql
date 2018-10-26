@@ -100,7 +100,7 @@ func (c *Client) runWithJSON(ctx context.Context, req *Request, resp interface{}
 	var requestBody bytes.Buffer
 	requestBodyObj := struct {
 		Query         string                 `json:"query"`
-		Variables     map[string]interface{} `json:"variables"`
+		Variables     map[string]interface{} `json:"variables,omitempty"`
 		OperationName string                 `json:"operationName,omitempty"`
 	}{
 		Query:         req.q,
@@ -291,6 +291,11 @@ func (req *Request) Var(key string, value interface{}) {
 		req.vars = make(map[string]interface{})
 	}
 	req.vars[key] = value
+}
+
+// OperationName sets the operation name
+func (req *Request) OperationName(operationName string) {
+	req.operationName = operationName
 }
 
 // File sets a file to upload.
