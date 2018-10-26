@@ -20,7 +20,7 @@ func TestDoJSON(t *testing.T) {
 		is.Equal(r.Method, http.MethodPost)
 		b, err := ioutil.ReadAll(r.Body)
 		is.NoErr(err)
-		is.Equal(string(b), `{"query":"query {}","variables":null}`+"\n")
+		is.Equal(string(b), `{"query":"query {}"}`+"\n")
 		io.WriteString(w, `{
 			"data": {
 				"something": "yes"
@@ -49,7 +49,7 @@ func TestDoJSONServerError(t *testing.T) {
 		is.Equal(r.Method, http.MethodPost)
 		b, err := ioutil.ReadAll(r.Body)
 		is.NoErr(err)
-		is.Equal(string(b), `{"query":"query {}","variables":null}`+"\n")
+		is.Equal(string(b), `{"query":"query {}"}`+"\n")
 		w.WriteHeader(http.StatusInternalServerError)
 		io.WriteString(w, `Internal Server Error`)
 	}))
@@ -74,7 +74,7 @@ func TestDoJSONBadRequestErr(t *testing.T) {
 		is.Equal(r.Method, http.MethodPost)
 		b, err := ioutil.ReadAll(r.Body)
 		is.NoErr(err)
-		is.Equal(string(b), `{"query":"query {}","variables":null}`+"\n")
+		is.Equal(string(b), `{"query":"query {}"}`+"\n")
 		w.WriteHeader(http.StatusBadRequest)
 		io.WriteString(w, `{
 			"errors": [{
