@@ -99,11 +99,13 @@ func (c *Client) Run(ctx context.Context, req *Request, resp interface{}) error 
 func (c *Client) runWithJSON(ctx context.Context, req *Request, resp interface{}) error {
 	var requestBody bytes.Buffer
 	requestBodyObj := struct {
-		Query     string                 `json:"query"`
-		Variables map[string]interface{} `json:"variables"`
+		Query         string                 `json:"query"`
+		Variables     map[string]interface{} `json:"variables"`
+		OperationName string                 `json:"operationName,omitempty"`
 	}{
-		Query:     req.q,
-		Variables: req.vars,
+		Query:         req.q,
+		Variables:     req.vars,
+		OperationName: req.operationName,
 	}
 	if err := json.NewEncoder(&requestBody).Encode(requestBodyObj); err != nil {
 		return errors.Wrap(err, "encode body")
@@ -264,9 +266,10 @@ type graphResponse struct {
 
 // Request is a GraphQL request.
 type Request struct {
-	q     string
-	vars  map[string]interface{}
-	files []file
+	q             string
+	vars          map[string]interface{}
+	files         []file
+	operationName string
 
 	// Header represent any request headers that will be set
 	// when the request is made.
